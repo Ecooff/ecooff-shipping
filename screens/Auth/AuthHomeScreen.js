@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../../store/userSlice";
 
 // SERVICES
-import { AuthService } from "../../services";
+import AuthService from "../../services/AuthService";
 
 const AuthHomeScreen = () => {
   const [email, setEmail] = useState("");
@@ -32,9 +32,11 @@ const AuthHomeScreen = () => {
   const dispatch = useDispatch();
 
   const me = (user, token) => {
-    user.token = token;
-    dispatch(login(user));
-    navigator.navigate("Home");
+    if (user) {
+      user.token = token;
+      dispatch(login(user));
+      navigator.navigate("Home");
+    }
   };
 
   const verifyData = (data) => {
@@ -46,32 +48,33 @@ const AuthHomeScreen = () => {
     }
   };
 
-  useEffect(async () => {
+  useEffect(() => {
+
     setTimeout(() => {
       // la logica de esto es esperar a que traiga los datos en el GET, y si
       setIsLoading(false); // no trae los datos muestra los botones
     }, 2000);
 
+    persistenceFunction();
+
+  }, []);
+
+  const persistenceFunction = async () =>{
     try {
+
       const token = await AsyncStorage.getItem("@me");
-      
+
       AuthService.retrieveUser(user)
-      .then((response) => user = setUser(response.data))
-      .catch((err) => console.log("something was wrong", err));
-      
+        .then((response) => user = setUser(response.data))
+        .catch((err) => console.log("something was wrong", err));
+
       //hacer un if user.data es undefined que muestre el loading . la idea es que espere 10segs y cambie el estado
       user ? me(user.data, token) : setIsLoading(false);
-      //!user ? setIsLoading(false) : setIsLoading(true);
-      //user ? setIsLoading(false) : setIsLoading(true);
 
-      //verifyData(user.data)
-      //user ? setIsLoading(true) : setIsLoading(false);
-      // SI isLoading es TRUE se muestra el loading
-      // funcion que haga un await en data y despues verifique si es true y si es false, y a partir de eso haga cambios
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }
 
   return (
     <View style={[styles.mainContaner, globalStyles.alignItemsCenter]}>
@@ -87,7 +90,7 @@ const AuthHomeScreen = () => {
       <View style={[styles.imgBanner, styles.absolute]}>
         <Image
           style={styles.banner}
-          source={require("../../assets/bg-plants.png")}
+          source={require("../../assets/bg-auth-home.png")}
         />
       </View>
 
@@ -121,16 +124,6 @@ const AuthHomeScreen = () => {
             <Text style={globalStyles.textWhite}>Iniciar sesión</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => navigator.navigate("Signup")}
-            style={[
-              globalStyles.button,
-              globalStyles.secondary,
-              globalStyles.widthFluid,
-            ]}
-          >
-            <Text style={globalStyles.textWhite}>Registrarme</Text>
-          </TouchableOpacity>
         </View>
       )}
       {/* ROCIAL ROW */}

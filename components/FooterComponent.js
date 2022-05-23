@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 export const FooterComponent = () => {
   const navigator = useNavigation();
   return (
-    <View style={styles.footerContainer}>
+    <View style={[globalStyles.primary,styles.footerContainer]}>
       <View
         style={[styles.footer, globalStyles.row, globalStyles.alignItemsCenter]}
       >
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 10,
     paddingHorizontal: 5,
-    backgroundColor: "rgba(77, 181, 145, 0.97)",
     borderRadius: 50,
     justifyContent: "space-around",
   },

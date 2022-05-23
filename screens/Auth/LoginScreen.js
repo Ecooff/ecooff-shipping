@@ -19,7 +19,7 @@ import { login } from "../../store/userSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // SERVICES
-import { AuthService } from "../../services";
+import AuthService from "../../services/AuthService";
 
 {
   /* COMPONENTS */
@@ -59,7 +59,7 @@ const LoginScreen = () => {
           navigator.navigate("Home");
         } else {
           console.log("else");
-          navigator.navigate("ValidateUser");
+          navigator.navigate("Home");
         }
       })
       .catch((err) => {
@@ -132,64 +132,6 @@ const LoginScreen = () => {
         </View>
       </View>
 
-      <TouchableOpacity
-        onPress={() => navigator.navigate("Forgot")}
-        style={styles.forgotContainer}
-      >
-        <Text
-          style={[
-            styles.headerTitle,
-            globalStyles.fontSmall,
-            globalStyles.fontBold,
-          ]}
-        >
-          ¿Olvidaste tu contraseña?
-        </Text>
-      </TouchableOpacity>
-
-      {/* SOCIAL BUTTONS */}
-      {/* <View
-        style={[
-          styles.socialRow,
-          globalStyles.row,
-          globalStyles.alignItemsCenter,
-        ]}
-      > */}
-      {/* APPLE */}
-      {/* <TouchableOpacity
-          onPress={() => navigator.navigate("Home")}
-          style={styles.socialIcon}
-        >
-          <AntDesign name="apple1" size={22} style={styles.socialColor} />
-        </TouchableOpacity> */}
-
-      {/* FACEBOOK */}
-      {/* <TouchableOpacity
-          onPress={() => navigator.navigate("Home")}
-          style={[styles.socialIcon, styles.facebook]}
-        > */}
-      {/* <FontAwesome
-            name="facebook-f"
-            size={22}
-            style={styles.socialColor}
-            color="#1777F2"
-          />
-        </TouchableOpacity> */}
-
-      {/* GOOGLE */}
-      {/* <TouchableOpacity
-          onPress={() => navigator.navigate("Home")}
-          style={[styles.socialIcon, styles.google]}
-        >
-          <AntDesign
-            name="google"
-            size={22}
-            style={styles.socialColor}
-            color="#ef4432"
-          />
-        </TouchableOpacity>
-      </View> */}
-
       {/* BUTTON */}
       <View style={[authStyles.buttonContainer, globalStyles.widthEightyFive]}>
         <TouchableOpacity
@@ -213,15 +155,6 @@ const LoginScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity
-        onPress={() => navigator.navigate("Signup")}
-        style={styles.registerContainter}
-      >
-        <Text style={[styles.headerTitle, globalStyles.fontSmall]}>
-          ¿No tenés cuenta?
-          <Text style={globalStyles.fontBold}> Registrate</Text>
-        </Text>
-      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
