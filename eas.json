@@ -18,6 +18,12 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "julii-c@hotmail.com",
+        "ascAppId": "1625731908",
+        "appleTeamId": "YS266HGHT5"
+      }
+    }
   }
 }

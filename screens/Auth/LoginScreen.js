@@ -19,7 +19,7 @@ import { login } from "../../store/userSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // SERVICES
-import AuthService from "../../services/AuthService";
+import { AuthService } from "../../services";
 
 {
   /* COMPONENTS */
@@ -53,14 +53,11 @@ const LoginScreen = () => {
       .then((response) => {
         if (response.message) {
           createAlert(response.message);
-        } else if (response.verified) {
+        } else
           storeData(response.token);
           dispatch(login(response));
           navigator.navigate("Home");
-        } else {
-          console.log("else");
-          navigator.navigate("Home");
-        }
+
       })
       .catch((err) => {
         console.log("something was wrong", err);
@@ -154,7 +151,6 @@ const LoginScreen = () => {
           )}
         </TouchableOpacity>
       </View>
-
     </KeyboardAvoidingView>
   );
 };

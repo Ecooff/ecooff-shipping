@@ -139,8 +139,9 @@ export default StyleSheet.create({
   },
 
   menuLogo: {
-    width: 80,
-    height: 30,
+    width: 90,
+    height: 40,
+    marginRight: 190,
   },
 
   sellIcons: {

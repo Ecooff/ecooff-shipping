@@ -1,5 +1,5 @@
 import axios from "axios";
-import URLPath from "../services/UrlPath";
+import { URLPath } from "../services";
 
 const AuthService = {
 
