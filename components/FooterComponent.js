@@ -2,18 +2,29 @@ import React, { Component } from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import { authStyles } from "../styles/authStyles";
 import globalStyles from "../styles/styles";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from 'expo-linear-gradient';
+
+// ICONS
+import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+
 
 export const FooterComponent = () => {
   const navigator = useNavigation();
   return (
     <View style={styles.footerContainer}>
-      <View
+
+
+      <LinearGradient
+        // Button Linear Gradient
+        colors={['#0487B1', '#12A8D9']}
+        start={{x: 0, y: 0.75}} end={{x: 1, y: 0.25}}
         style={[styles.footer, globalStyles.row, globalStyles.alignItemsCenter]}
       >
+
+        {/* HOME */}
         <TouchableOpacity
           onPress={() => navigator.navigate("Home")}
           style={styles.footerIcon}
@@ -24,6 +35,7 @@ export const FooterComponent = () => {
           </Text>
         </TouchableOpacity>
 
+        {/* PEDIDOS DEL DÍA */}
         <TouchableOpacity
           onPress={() => navigator.navigate("OrderHistory")}
           style={styles.footerIcon}
@@ -34,31 +46,25 @@ export const FooterComponent = () => {
             size={24}
           />
           <Text style={[styles.footerLabel, globalStyles.fontXSmall]}>
-            Pedidos
+            Pedidos del día
           </Text>
         </TouchableOpacity>
 
+        {/* A ENTREGAR */}
         <TouchableOpacity
           onPress={() => navigator.navigate("Cart")}
           style={styles.footerIcon}
         >
-          <Ionicons name="ios-cart-outline" style={styles.icon} size={24} />
+          <MaterialCommunityIcons name="truck-fast" size={24} style={styles.icon} />
           <Text style={[styles.footerLabel, globalStyles.fontXSmall]}>
-            Carrito
+            A entregar
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigator.navigate("Profile")}
-          style={styles.footerIcon}
-        >
-          <AntDesign name="user" style={styles.icon} size={24} />
-          <Text style={[styles.footerLabel, globalStyles.fontXSmall]}>
-            Mi perfil
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </LinearGradient>
+
     </View>
+
   );
 };
 

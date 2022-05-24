@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ecooff.ecooffshipping"
+      "bundleIdentifier": "com.ecooff.shipping"
     },
     "android": {
       "adaptiveIcon": {

@@ -47,15 +47,14 @@ const AuthHomeScreen = () => {
   };
 
   useEffect(() => {
-    initComponent();
-  }, []);
-
-  const initComponent = async () => {
-
     setTimeout(() => {
       // la logica de esto es esperar a que traiga los datos en el GET, y si
       setIsLoading(false); // no trae los datos muestra los botones
+      initComponent();
     }, 2000);
+  }, []);
+
+  const initComponent = async () => {
 
     try {
       const token = await AsyncStorage.getItem("@me");
