@@ -132,7 +132,6 @@ const LoginScreen = () => {
       {/* BUTTON */}
       <View style={[authStyles.buttonContainer, globalStyles.widthEightyFive]}>
         <TouchableOpacity
-          onPress={() => handleLogin()}
           style={[
             globalStyles.button,
             globalStyles.primary,

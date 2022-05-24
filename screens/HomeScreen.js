@@ -16,10 +16,9 @@ import globalStyles from "../styles/styles";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice";
-import { ProgressBar, Colors } from 'react-native-paper';
 
 { /* COMPONENTS */ }
-import { MenuComponent, FooterComponent } from "../components";
+import { MenuComponent, FooterComponent, ProgressBarComponent } from "../components";
 
 { /* SERVICES */ }
 import ordersService from "../services/OrdersService";
@@ -85,7 +84,7 @@ const HomeScreen = () => {
 
       {/* VIEW */}
       <View style={[globalStyles.row, globalStyles.justifyContentCenter]}>
-        <View style={[styles.dateBox, styles.shadowStyle]}>
+        <View style={[styles.dateBox, globalStyles.shadowStyle]}>
 
           <Text style={globalStyles.fontBold}>
             {new Date().getDate()}
@@ -103,18 +102,18 @@ const HomeScreen = () => {
       <View style={[globalStyles.row, globalStyles.justifyContentAround]}>
 
         <View>
-          <Text style={[globalStyles.fontLarge, globalStyles.widthFluid,{textAlign: 'center'}]}>39</Text>
-          <Text style={[globalStyles.fontMedium, globalStyles.widthFluid,{textAlign: 'center'}]}>Ordenes</Text>
+          <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>39</Text>
+          <Text style={[globalStyles.fontMedium, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>Ordenes</Text>
         </View>
 
         <View>
-          <Text style={[globalStyles.fontLarge, globalStyles.widthFluid,{textAlign: 'center'}]}>14</Text>
-          <Text style={[globalStyles.fontMedium, globalStyles.widthFluid,{textAlign: 'center'}]}>Comercios</Text>
+          <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>14</Text>
+          <Text style={[globalStyles.fontMedium, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>Comercios</Text>
         </View>
 
         <View>
-          <Text style={[globalStyles.fontLarge, globalStyles.widthFluid,{textAlign: 'center'}]}>137</Text>
-          <Text style={[globalStyles.fontMedium, globalStyles.widthFluid,{textAlign: 'center'}]}>Bolsas</Text>
+          <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>137</Text>
+          <Text style={[globalStyles.fontMedium, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>Bolsas</Text>
         </View>
 
       </View>
@@ -123,19 +122,22 @@ const HomeScreen = () => {
 
         <Text style={[globalStyles.fontBold, globalStyles.fontLarge]}>Evolución</Text>
 
-        <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
+        {/* PROGRESS BAR */}
+        <Text style={[globalStyles.fontMedium, { marginTop: 20 }]}>Pedidos listos</Text>
+        <ProgressBarComponent color1={'#E09B14'} color2={'#F8BC47'} percentage={62} showNumber={true} />
 
-        <ProgressBar style={globalStyles.widthEightyFive} progress={0.5} color={'red'} />
-        <Text style={{width:'10%'}}>90%</Text>
+        <Text style={[globalStyles.fontMedium, { marginTop: 20 }]}>Pedidos recogidos</Text>
+        <ProgressBarComponent color1={'#0480A9'} color2={'#26BCED'} percentage={87} showNumber={true}  />
 
-        </View>
+        <Text style={[globalStyles.fontMedium, { marginTop: 20 }]}>Pedidos entregados</Text>
+        <ProgressBarComponent color1={'#429C7D'} color2={'#7ECFB3'} percentage={24} showNumber={true}  />
 
       </View>
 
       {/* FOOTER */}
-      <FooterComponent />
+      <FooterComponent view={0} />
 
-    </View>
+    </View >
   );
 };
 
@@ -157,16 +159,6 @@ const styles = StyleSheet.create({
     marginTop: 60
   },
 
-  shadowStyle: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.30,
-    shadowRadius: 4,
-  },
-
   title: {
     textAlign: 'center',
     marginVertical: 45
@@ -175,6 +167,6 @@ const styles = StyleSheet.create({
   progressBarContainer: {
     marginTop: 60,
     paddingHorizontal: 35
-  }
+  },
 
 });

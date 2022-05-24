@@ -11,7 +11,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from "@expo/vector-icons";
 
 
-export const FooterComponent = () => {
+export const FooterComponent = ({
+  view
+}) => {
   const navigator = useNavigation();
   return (
     <View style={styles.footerContainer}>
@@ -27,36 +29,32 @@ export const FooterComponent = () => {
         {/* HOME */}
         <TouchableOpacity
           onPress={() => navigator.navigate("Home")}
-          style={styles.footerIcon}
+          style={[styles.footerIcon, {paddingHorizontal: 15}]}
         >
-          <Ionicons name="home-outline" style={styles.icon} size={24} />
-          <Text style={[styles.footerLabel, globalStyles.fontXSmall]}>
+          <Ionicons name="home-outline" style={[styles.icon, styles.color, view == 0 && styles.selected]} size={24} />
+          <Text style={[styles.footerLabel, globalStyles.fontXSmall, styles.color, view == 0 && styles.selected]}>
             Inicio
           </Text>
         </TouchableOpacity>
 
         {/* PEDIDOS DEL DÍA */}
         <TouchableOpacity
-          onPress={() => navigator.navigate("OrderHistory")}
+          onPress={() => navigator.navigate("PickUpView")}
           style={styles.footerIcon}
         >
-          <MaterialCommunityIcons
-            name="shopping-outline"
-            style={styles.icon}
-            size={24}
-          />
-          <Text style={[styles.footerLabel, globalStyles.fontXSmall]}>
-            Pedidos del día
+          <MaterialCommunityIcons name="shopping-outline" style={[styles.icon, styles.color, view == 1 && styles.selected]} size={24} />
+          <Text style={[styles.footerLabel, globalStyles.fontXSmall, styles.color, view == 1 && styles.selected]}>
+            A recoger
           </Text>
         </TouchableOpacity>
 
         {/* A ENTREGAR */}
         <TouchableOpacity
-          onPress={() => navigator.navigate("Cart")}
+          onPress={() => navigator.navigate("DeliveryView")}
           style={styles.footerIcon}
         >
-          <MaterialCommunityIcons name="truck-fast" size={24} style={styles.icon} />
-          <Text style={[styles.footerLabel, globalStyles.fontXSmall]}>
+          <MaterialCommunityIcons name="truck-fast" size={24} style={[styles.icon, styles.color, view == 2 && styles.selected]} />
+          <Text style={[styles.footerLabel, globalStyles.fontXSmall, styles.color, view == 2 && styles.selected]}>
             A entregar
           </Text>
         </TouchableOpacity>
@@ -88,10 +86,20 @@ const styles = StyleSheet.create({
   footerIcon: {
     justifyContent: "center",
     alignItems: "center",
+    width:80
   },
 
   icon: {
     color: "rgba(255, 255, 255, 0.7)",
+  },
+
+  color: {
+    opacity: 0.7
+  },
+
+  selected: {
+    opacity: 1,
+    color: 'white'
   },
 
   footerLabel: {

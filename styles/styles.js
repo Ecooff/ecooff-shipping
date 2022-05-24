@@ -9,6 +9,24 @@ export default StyleSheet.create({
     backgroundColor: "#4DB591",
   },
 
+  baseColor: {
+    backgroundColor: "#D9D9D9",
+  },
+
+  shadowStyle: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.30,
+    shadowRadius: 4,
+  },
+
+  homeContainer: {
+    flex: 1,
+  },
+
   scrollContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -35,6 +53,10 @@ export default StyleSheet.create({
 
   fontLarge: {
     fontSize: 24,
+  },
+
+  fontMlarge: {
+    fontSize: 20,
   },
 
   fontMedium: {
