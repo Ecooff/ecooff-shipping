@@ -5,6 +5,7 @@ import AuthHomeScreen from "../screens/Auth/AuthHomeScreen";
 import LoginScreen from "../screens/Auth/LoginScreen";
 
 // SCREENS
+import IndexScreen from "../screens/IndexScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PickUpView from "../screens/PickUpView";
 import DeliveryView from "../screens/DeliveryView";
@@ -34,33 +35,15 @@ const Stack = () => {
         component={LoginScreen}
       />
 
-      {/* HOME */}
+      {/* INDEX */}
       {
         <StackNav.Screen
           options={{ headerShown: false, gestureEnabled: false }}
-          name="Home"
-          component={HomeScreen}
+          name="Index"
+          component={IndexScreen}
         />
       }
-
-      {/* PICK UP */}
-      {
-        <StackNav.Screen
-          options={{ headerShown: false, gestureEnabled: false }}
-          name="PickUpView"
-          component={PickUpView}
-        />
-      }
-
-      {/* PICK UP */}
-      {
-        <StackNav.Screen
-          options={{ headerShown: false, gestureEnabled: false }}
-          name="DeliveryView"
-          component={DeliveryView}
-        />
-      }
-
+      
       {/* PICK UP */}
       {
         <StackNav.Screen
@@ -69,6 +52,7 @@ const Stack = () => {
           component={DetailScreen}
         />
       }
+      
     </StackNav.Navigator>
   );
 };

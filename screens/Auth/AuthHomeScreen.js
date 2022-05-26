@@ -65,7 +65,7 @@ const AuthHomeScreen = () => {
 
             // SET USER GLOBAL
             dispatch(login(user));
-            navigator.navigate("Home");
+            navigator.navigate("Index");
 
           }).catch((err) => {
             setIsLoading(false);

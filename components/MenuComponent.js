@@ -32,20 +32,6 @@ export const MenuComponent = ({ onPress }) => {
   return (
     <SafeAreaView style={styles.mainMenu} >
 
-      <View style={{ marginTop: "3%" }}>
-
-        <TouchableOpacity
-          style={styles.backIcon}
-          onPress={() => navigator.navigate("Home")}
-        >
-          <MaterialIcons
-            name="arrow-back-ios"
-            size={22}
-            color="grey"
-          />
-        </TouchableOpacity>
-      </View>
-
       <Image style={globalStyles.menuLogo} source={theIcon} />
 
       <TouchableOpacity

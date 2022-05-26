@@ -17,9 +17,6 @@ const AuthMenuComponent = () => {
           globalStyles.alignItemsCenter,
         ]}
       >
-        <TouchableOpacity onPress={() => navigator.goBack()}>
-          <MaterialIcons name="arrow-back-ios" style={globalStyles.arrow} />
-        </TouchableOpacity>
 
         <Image
           style={[authStyles.logoInline, globalStyles.menuLogo]}

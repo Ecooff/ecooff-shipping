@@ -5,8 +5,8 @@ export const URL = PROD;
 
 //Users
 export const serverAlive = URL + "users/serverAlive";
-export const login = URL + "users/authenticate";
-export const retrieveUser = URL + "users/retrieveUser";
+export const login = URL + "shipping/auth/authenticate";
+export const retrieveUser = URL + "shipping/auth/retrieveUser";
 
 const URLPath = {
   serverAlive,

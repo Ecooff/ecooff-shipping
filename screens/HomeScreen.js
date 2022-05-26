@@ -79,9 +79,6 @@ const HomeScreen = () => {
   return (
     <View style={[styles.homeContainer]}>
 
-      {/* MENU */}
-      <MenuComponent style={{ position: "absolute", top: 30 }} />
-
       {/* VIEW */}
       <View style={styles.mainContainer}>
 
@@ -139,7 +136,7 @@ const HomeScreen = () => {
       </View>
 
       {/* FOOTER */}
-      <FooterComponent view={0} />
+      <FooterComponent />
 
     </View >
   );

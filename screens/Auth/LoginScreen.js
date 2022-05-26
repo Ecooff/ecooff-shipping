@@ -51,7 +51,7 @@ const LoginScreen = () => {
         } else
           storeData(response.data.token);
           dispatch(login(response.data));
-          navigator.navigate("Home");
+          navigator.navigate("Index");
 
       })
       .catch((err) => {

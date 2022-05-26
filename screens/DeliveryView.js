@@ -22,9 +22,6 @@ const DeliveryView = () => {
   return (
     <View style={[globalStyles.homeContainer]}>
 
-      {/* MENU */}
-      <MenuComponent style={{ position: "absolute", top: 30 }} />
-
       {/* VIEW */}
       <View style={[globalStyles.row, styles.viewTitle]}>
         <Text style={[globalStyles.fontBold, globalStyles.fontLarge]}>Pedidos a recoger</Text>
@@ -105,9 +102,6 @@ const DeliveryView = () => {
         <SafeAreaView style={{ height: 110 }}></SafeAreaView>
 
       </ScrollView>
-
-      {/* FOOTER */}
-      <FooterComponent view={2} />
 
     </View>
   );
