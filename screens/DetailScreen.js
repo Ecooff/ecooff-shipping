@@ -42,7 +42,7 @@ const DeliveryView = () => {
       </LinearGradient>
 
       {/* PERSONAL DATA */}
-      <Text style={[globalStyles.widthFluid, globalStyles.textCenter, globalStyles.fontLarge, globalStyles.fontBold, { marginTop: 40 }]}>Manuel Gonzales</Text>
+      <Text style={[globalStyles.widthFluid, globalStyles.textCenter, globalStyles.fontLarge, globalStyles.fontBold, { marginTop: 25 }]}>Manuel Gonzales</Text>
       <Text style={[globalStyles.widthFluid, globalStyles.textCenter, globalStyles.fontMlarge, { color: 'grey' }, { marginTop: 10 }]}>Cabildo 1928, P1 DE</Text>
 
       {/* BUTTON */}
@@ -67,8 +67,6 @@ const DeliveryView = () => {
         <OrderBargsComponent />
         <OrderBargsComponent />
 
-        <SafeAreaView style={{ height: 100 }}></SafeAreaView>
-
       </ScrollView>
 
     </View>
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
 
   mainBanner: {
     width: '100%',
-    height: 250
+    height: '25%'
   },
 
   button: {
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    marginTop: 40,
+    marginTop: 25,
   },
 
   buttonText: {

@@ -4,15 +4,13 @@ import { URLPath } from "../services";
 const AuthService = {
 
   login: async (user) => {
-    const data = await axios.post(URLPath.login, user, {
-      headers: setHeader(user.token),
-    });
+    const data = await axios.post(URLPath.login, user);
     return data;
   },
 
-  retrieveUser: async (user) => {
+  retrieveUser: async (token) => {
     const data = await axios.get(URLPath.retrieveUser, {
-      headers: setHeader(user.token),
+      headers: setHeader(token),
     });
     return data;
   }

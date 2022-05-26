@@ -35,13 +35,7 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
 
   const handleLogin = () => {
-    const storeData = async (value) => {
-      try {
-        await AsyncStorage.setItem("@me", value);
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    
     setLoader(true);
 
     let user = {
@@ -51,19 +45,27 @@ const LoginScreen = () => {
 
     AuthService.login(user)
       .then((response) => {
+
         if (response.message) {
           createAlert(response.message);
         } else
-          storeData(response.token);
-          dispatch(login(response));
+          storeData(response.data.token);
+          dispatch(login(response.data));
           navigator.navigate("Home");
 
       })
       .catch((err) => {
-        console.log("something was wrong", err);
-        createAlert(err);
+        createAlert('Datos incorrectos');
       })
       .finally(() => setLoader(false));
+  };
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem("@me", value);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const createAlert = (message) =>
@@ -138,6 +140,7 @@ const LoginScreen = () => {
             globalStyles.widthFluid,
             styles.buttonSignIn,
           ]}
+          onPress={() => handleLogin()}
         >
           {loader == false < 2 ? (
             <View>

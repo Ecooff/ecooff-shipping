@@ -96,7 +96,7 @@ const PickUpView = () => {
 
       </View>
 
-      <ScrollView style={[{ paddingHorizontal: 30 }, { paddingTop: 10 }, { marginTop: 20 }]}>
+      <ScrollView style={styles.scrollContainer}>
 
         <PickUpComponent />
         <PickUpComponent />
@@ -118,13 +118,13 @@ export default PickUpView;
 const styles = StyleSheet.create({
 
   progressBarCont: {
-    paddingHorizontal: 30,
-    marginTop: 30
+    paddingHorizontal: 20,
+    marginTop: 20
   },
 
   viewTitle: {
-    paddingHorizontal: 30,
-    marginTop: 50
+    paddingHorizontal: 20,
+    marginTop: 25
   },
 
   progresLabel: {
@@ -134,8 +134,18 @@ const styles = StyleSheet.create({
   },
 
   buttonsRow: {
-    paddingHorizontal: 30,
-    marginTop: 30
+    paddingHorizontal: 20,
+    marginTop: 20,
+    zIndex: 30,
+    
+    shadowColor: "#FFF",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10,
+
   },
 
   button: {
@@ -149,5 +159,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'grey'
   },
+  
+  scrollContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  }
 
 });
