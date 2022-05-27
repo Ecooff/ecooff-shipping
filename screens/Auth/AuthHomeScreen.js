@@ -38,19 +38,9 @@ const AuthHomeScreen = () => {
 
       (async () => {
 
-        const updateTokenn = async (token) => {
-
-          try {
-            await AsyncStorage.setItem("@me", token);
-          } catch (e) {
-            console.log(e);
-          }
-        };
-
         try {
 
           token = await AsyncStorage.getItem("@me");
-
           // IF TOKEN VALID
           AuthService.retrieveUser(token).then((response) => {
 
@@ -61,10 +51,10 @@ const AuthHomeScreen = () => {
             setIsLoading(false);
 
             // UPDATE TOKEN STORED IN LOCALSTORAGE
-            updateTokenn(user.newToken);
+            updateTokenn(response.data.newToken);
 
             // SET USER GLOBAL
-            dispatch(login(user));
+            dispatch(login(response.data));
             navigator.navigate("Index");
 
           }).catch((err) => {
@@ -80,6 +70,16 @@ const AuthHomeScreen = () => {
     }, 2000);
 
   }, []);
+
+
+  const updateTokenn = async (token) => {
+
+    try {
+      await AsyncStorage.setItem("@me", token);
+    } catch (e) {
+      console.log('Token error ', e);
+    }
+  };
 
   return (
     <View style={[styles.mainContaner, globalStyles.alignItemsCenter]}>
@@ -112,7 +112,7 @@ const AuthHomeScreen = () => {
         </Text>
       </View>
       {isLoading ? (
-        <ActivityIndicator size="large" color="#4db591" />
+        <ActivityIndicator size="large" color="#0594c3" />
       ) : (
         <View
           style={[authStyles.buttonContainer, globalStyles.widthEightyFive]}

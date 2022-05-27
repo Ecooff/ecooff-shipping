@@ -4,7 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import globalStyles from "../styles/styles";
 
 // COMPONENTS
-import { ProgressBarComponent, BagComponent } from "../components";
+import ProgressBarComponent from "./ProgressBarComponent";
+import BagComponent from "./BagComponent";
 
 export const PickUpComponent = () => {
 

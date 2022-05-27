@@ -28,6 +28,14 @@ const HomeScreen = () => {
   const user = useSelector(selectUser);
   const navigator = useNavigation();
   const [month, setMonth] = useState('');
+  const [orders, setOrders] = useState(0);
+  const [providres, setProvidres] = useState(0);
+  const [bags, setBags] = useState(0);
+  const [statReady, setStatReady] = useState(0);
+  const [statPicked, setStatPicked] = useState(0);
+  const [statFinished, setStatFinished] = useState(0);
+
+  let total = 0;
 
   useEffect(() => {
 
@@ -69,11 +77,54 @@ const HomeScreen = () => {
         setMonth('Div');
         break;
     }
+    ordersService.getHomeStats(user).then((response) => {
+      incrementAnimmation(0, response.data.ordersLength, 0);
+      incrementAnimmation(0, response.data.providersLength, 1);
+      incrementAnimmation(0, response.data.bagsLength, 2);
+      incrementAnimmation(0, response.data.ordersReady, 3);
+      incrementAnimmation(0, response.data.ordersRetrieved, 4);
+      incrementAnimmation(0, response.data.ordersCompleted, 5);
+    }).catch((err) => console.log('ERROR HOME STATS ', err))
 
   }, []);
 
-  // FOR CLOSEING THE MODAL
-  const callback = (param) => {
+  const incrementAnimmation = (i, maxLength, option) => {
+
+    if (maxLength > 0) {
+
+      if (maxLength >= 100 && i == 0) {
+        i = maxLength / 2;
+        maxLength = maxLength / 2;
+      };
+
+      setTimeout(function () {
+        switch (option) {
+          case 0:
+            setOrders(i);
+            break;
+          case 1:
+            setProvidres(i);
+            break;
+          case 2:
+            setBags(i);
+            break;
+          case 3:
+            setStatReady(i);
+            break;
+          case 4:
+            setStatPicked(i);
+            break;
+          case 5:
+            setStatFinished(i);
+            break;
+        }
+        i++;
+        i <= maxLength && incrementAnimmation(i, maxLength, option);
+      }, 50 / maxLength);
+
+    }
+
+
   };
 
   return (
@@ -101,17 +152,17 @@ const HomeScreen = () => {
         <View style={[globalStyles.row, globalStyles.justifyContentAround, globalStyles.widthFluid]}>
 
           <View>
-            <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>39</Text>
+            <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>{orders}</Text>
             <Text style={[globalStyles.fontMedium, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>Ordenes</Text>
           </View>
 
           <View>
-            <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>14</Text>
+            <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>{providres}</Text>
             <Text style={[globalStyles.fontMedium, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>Comercios</Text>
           </View>
 
           <View>
-            <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>137</Text>
+            <Text style={[globalStyles.fontLarge, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>{bags}</Text>
             <Text style={[globalStyles.fontMedium, globalStyles.widthFluid, globalStyles.textCenter, { marginBottom: 10 }]}>Bolsas</Text>
           </View>
 
@@ -123,13 +174,13 @@ const HomeScreen = () => {
 
           {/* PROGRESS BAR */}
           <Text style={[globalStyles.fontMedium, { marginTop: 20 }]}>Pedidos listos</Text>
-          <ProgressBarComponent color1={'#E09B14'} color2={'#F8BC47'} percentage={62} showNumber={true} />
+          <ProgressBarComponent color1={'#E09B14'} color2={'#F8BC47'} percentage={statReady} showNumber={true} />
 
           <Text style={[globalStyles.fontMedium, { marginTop: 10 }]}>Pedidos recogidos</Text>
-          <ProgressBarComponent color1={'#0480A9'} color2={'#26BCED'} percentage={87} showNumber={true} />
+          <ProgressBarComponent color1={'#0480A9'} color2={'#26BCED'} percentage={statPicked} showNumber={true} />
 
           <Text style={[globalStyles.fontMedium, { marginTop: 10 }]}>Pedidos entregados</Text>
-          <ProgressBarComponent color1={'#429C7D'} color2={'#7ECFB3'} percentage={24} showNumber={true} />
+          <ProgressBarComponent color1={'#429C7D'} color2={'#7ECFB3'} percentage={statFinished} showNumber={true} />
 
         </View>
 
@@ -153,10 +204,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     paddingBottom: 125,
     flexWrap: 'wrap',
-    flex:1,
-    flexDirection:'row',
-    alignContent:'space-between',
-    justifyContent:'center'
+    flex: 1,
+    flexDirection: 'row',
+    alignContent: 'space-between',
+    justifyContent: 'center'
   },
 
   dateBox: {

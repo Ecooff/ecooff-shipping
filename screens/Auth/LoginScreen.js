@@ -45,7 +45,6 @@ const LoginScreen = () => {
 
     AuthService.login(user)
       .then((response) => {
-
         if (response.message) {
           createAlert(response.message);
         } else
