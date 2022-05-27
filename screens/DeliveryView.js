@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StatusBar, StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ActivityIndicator, Pressable, Modal } from "react-native";
+import { ScrollView, ActivityIndicator, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import globalStyles from "../styles/styles";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice";
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 { /* COMPONENTS */ }
-import { MenuComponent, FooterComponent, OrderComponent, ProgressBarComponent } from "../components";
+import { OrderComponent, ProgressBarComponent } from "../components";
 
 { /* SERVICES */ }
 import ordersService from "../services/OrdersService";
@@ -15,9 +17,32 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const DeliveryView = () => {
 
   const user = useSelector(selectUser);
-
+  const [listOfOrders, setListOfOrders] = useState({});
+  const [filter, setFilter] = useState('Lista');
+  const [loading, setLoading] = useState(false);
   const buttongradient = ['#0986AF', '#28A5CE'];
   const whitegradient = ['#FFF', '#FFF'];
+
+  useEffect(() => {
+
+    getOrderList(filter);
+
+  }, []);
+
+  const changeFilter = (newFilter) => {
+    if (filter != newFilter) {
+      setFilter(newFilter);
+      getOrderList(newFilter);
+    }
+  }
+
+  const getOrderList = (newFilter) => {
+    setLoading(true);
+    ordersService.getOrdersToDeliver(user, newFilter).then((response) => {
+      setListOfOrders(response.data);
+      setLoading(false);
+    }).catch((err) => console.log('ERROR DELIVERY VIEW ', err));
+  }
 
   return (
     <View style={[globalStyles.homeContainer]}>
@@ -25,26 +50,29 @@ const DeliveryView = () => {
       {/* VIEW */}
       <View style={[globalStyles.row, styles.viewTitle]}>
         <Text style={[globalStyles.fontBold, globalStyles.fontLarge]}>Pedidos a recoger</Text>
-        <Text style={[globalStyles.fontMedium, { margin: 6 }]}>(30)</Text>
+        <Text style={[globalStyles.fontMedium, { margin: 6 }]}>({listOfOrders.ordersCompleted})</Text>
       </View>
 
       <View style={styles.progressBarCont}>
-        <ProgressBarComponent color1={'#037AA0'} color2={'#67D4F8'} percentage={78} thin={true} />
-        <Text style={[globalStyles.fontMain, styles.progresLabel]}>40% de los productos listos</Text>
+        <ProgressBarComponent color1={'#037AA0'} color2={'#67D4F8'} percentage={listOfOrders.ordersCompleted} thin={true} />
+        <Text style={[globalStyles.fontMain, styles.progresLabel]}>{listOfOrders.ordersCompleted}% de los productos listos</Text>
       </View>
 
       <View style={[globalStyles.row, globalStyles.justifyContentAround, globalStyles.alignItemsCenter, styles.buttonsRow]}>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          style={filter != 'Lista' && [globalStyles.shadowStyle, styles.button]}
+          onPress={() => changeFilter('Lista')}
+        >
 
           <LinearGradient
             // Button Linear Gradient
-            colors={buttongradient}
+            colors={filter == 'Lista' ? buttongradient : whitegradient}
             start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
-            style={[globalStyles.shadowStyle, styles.button]}
+            style={filter == 'Lista' && [globalStyles.shadowStyle, styles.button]}
           >
 
-            <Text style={[styles.buttonText, styles.selected, globalStyles.textWhite]}>
+            <Text style={filter == 'Lista' && [styles.buttonText, styles.selected, globalStyles.textWhite]}>
               A entregar
             </Text>
 
@@ -53,16 +81,18 @@ const DeliveryView = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[globalStyles.shadowStyle, styles.button]}
+          style={filter != 'Recogida' && [globalStyles.shadowStyle, styles.button]}
+          onPress={() => changeFilter('Recogida')}
         >
 
           <LinearGradient
             // Button Linear Gradient
-            colors={whitegradient}
+            colors={filter == 'Recogida' ? buttongradient : whitegradient}
             start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
+            style={filter == 'Recogida' && [globalStyles.shadowStyle, styles.button]}
           >
 
-            <Text style={[styles.buttonText, styles.selected]}>
+            <Text style={filter == 'Recogida' && [styles.buttonText, styles.selected, globalStyles.textWhite]}>
               Entregados
             </Text>
 
@@ -71,16 +101,18 @@ const DeliveryView = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[globalStyles.shadowStyle, styles.button]}
+          style={filter != 'All' && [globalStyles.shadowStyle, styles.button]}
+          onPress={() => changeFilter('All')}
         >
 
           <LinearGradient
             // Button Linear Gradient
-            colors={whitegradient}
+            colors={filter == 'All' ? buttongradient : whitegradient}
             start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
+            style={filter == 'All' && [globalStyles.shadowStyle, styles.button]}
           >
 
-            <Text style={[styles.buttonText, styles.selected]}>
+            <Text style={filter == 'All' && [styles.buttonText, styles.selected, globalStyles.textWhite]}>
               Todos
             </Text>
 
@@ -92,12 +124,24 @@ const DeliveryView = () => {
 
       <ScrollView style={styles.scrollContainer}>
 
-        <OrderComponent />
-        <OrderComponent />
-        <OrderComponent />
-        <OrderComponent />
-        <OrderComponent />
-        <OrderComponent />
+        {
+          // IF LOADING
+          !loading ?
+            // IF THERES DATA
+            listOfOrders.orderArray != null && listOfOrders.orderArray.length > 0 ?
+              listOfOrders.orderArray.map((order) => {
+                return (
+                  <OrderComponent order={order} />
+                )
+              })
+              :
+              <View style={globalStyles.emptyListContainer}>
+                <MaterialCommunityIcons name="basket-remove" size={100} color="lightgrey" />
+                <Text style={[globalStyles.textCenter, globalStyles.fontMedium, globalStyles.fontBold, globalStyles.emptyListText]}>Sin ordenes para mostrar</Text>
+              </View>
+            :
+            <ActivityIndicator size="large" style={globalStyles.loaders} />
+        }
 
         <SafeAreaView style={{ height: 110 }}></SafeAreaView>
 
@@ -131,7 +175,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 20,
     zIndex: 30,
-    
+
     shadowColor: "#FFF",
     shadowOffset: {
       width: 0,
@@ -152,7 +196,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'grey'
   },
-  
+
   scrollContainer: {
     paddingHorizontal: 20,
     paddingTop: 20,

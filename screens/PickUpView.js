@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice";
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
 { /* COMPONENTS */ }
 import { MenuComponent, FooterComponent, PickUpComponent, ProgressBarComponent } from "../components";
@@ -17,9 +18,33 @@ const PickUpView = () => {
 
   const user = useSelector(selectUser);
   const navigator = useNavigation();
+  const [filter, setFilter] = useState('Recogida');
+  const [loading, setLoading] = useState(false);
+  const [listOfPickUps, setListOfPickUps] = useState({});
 
   const buttongradient = ['#0986AF', '#28A5CE'];
   const whitegradient = ['#FFF', '#FFF'];
+
+  useEffect(() => {
+
+    getOrderList(filter);
+
+  }, []);
+
+  const changeFilter = (newFilter) => {
+    if (filter != newFilter) {
+      setFilter(newFilter);
+      getOrderList(newFilter);
+    }
+  }
+
+  const getOrderList = (newFilter) => {
+    setLoading(true);
+    ordersService.getOrdersToDeliver(user, newFilter).then((response) => {
+      setLoading(false);
+      setListOfPickUps(response.data);
+    }).catch((err) => console.log('ERROR DELIVERY VIEW ', err));
+  }
 
   return (
     <View style={[globalStyles.homeContainer]}>
@@ -95,9 +120,25 @@ const PickUpView = () => {
 
       <ScrollView style={styles.scrollContainer}>
 
-        <PickUpComponent />
-        <PickUpComponent />
-        <PickUpComponent />
+
+        {
+          // IF LOADING
+          !loading ?
+            // IF THERES DATA
+            listOfPickUps.orderArray != null && listOfPickUps.orderArray.length > 0 ?
+              listOfPickUps.orderArray.map((item) => {
+                return (
+                  <PickUpComponent />
+                )
+              })
+              :
+              <View style={globalStyles.emptyListContainer}>
+                <MaterialIcons name="remove-shopping-cart" size={100} color="lightgrey" />
+                <Text style={[globalStyles.textCenter, globalStyles.fontMedium, globalStyles.fontBold, globalStyles.emptyListText]}>Sin ordenes para mostrar</Text>
+              </View>
+            :
+            <ActivityIndicator size="large" style={globalStyles.loaders} />
+        }
 
         <SafeAreaView style={{ height: 100 }}></SafeAreaView>
 
@@ -131,7 +172,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 20,
     zIndex: 30,
-    
+
     shadowColor: "#FFF",
     shadowOffset: {
       width: 0,
@@ -153,7 +194,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'grey'
   },
-  
+
   scrollContainer: {
     paddingHorizontal: 20,
     paddingTop: 20,

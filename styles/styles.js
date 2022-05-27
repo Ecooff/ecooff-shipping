@@ -142,6 +142,11 @@ export default StyleSheet.create({
     marginStart: 10,
   },
 
+  loaders: {
+    color: "#979797",
+    marginTop: '30%',
+  },
+
   input: {
     paddingHorizontal: 15,
     paddingVertical: 15,
@@ -181,6 +186,16 @@ export default StyleSheet.create({
   horizontal: {
     flexDirection: "row",
     justifyContent: "space-around",
+  },
+
+  emptyListContainer: {
+    alignItems: 'center',
+    marginTop: '30%'
+  },
+
+  emptyListText: {
+    marginTop: 10,
+    color: 'lightgrey'
   },
 
   //..............

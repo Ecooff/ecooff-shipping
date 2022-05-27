@@ -10,6 +10,13 @@ const OrdersService = {
     return data;
   },
 
+  getOrdersToDeliver: async (user, filter) => {
+    const data = await axios.get(URLPath.getOrdersToDeliver + filter, {
+      headers: setHeader(user.token),
+    });
+    return data;
+  },
+
   changeOrderStatus: async (user, status) => {
     const data = await axios.put(URLPath.changeOrderStatus, status, {
       headers: setHeader(user.token),

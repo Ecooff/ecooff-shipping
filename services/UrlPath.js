@@ -10,6 +10,7 @@ export const retrieveUser = URL + "shipping/auth/retrieveUser";
 
 // ORDERS
 export const getHomeStats = URL + "orders/getDailyOrdersLength";
+export const getOrdersToDeliver = URL + "orders/getDeliveryScreenData/";
 export const changeOrderStatus = URL + "orders/changeStatu";
 
 const URLPath = {
@@ -17,7 +18,8 @@ const URLPath = {
   login,
   retrieveUser,
   getHomeStats,
-  changeOrderStatus
+  changeOrderStatus,
+  getOrdersToDeliver
 };
 
 export default URLPath;

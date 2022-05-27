@@ -4,7 +4,9 @@ import globalStyles from "../styles/styles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 
-export const OrderComponent = () => {
+export const OrderComponent = (
+  order
+) => {
 
   const navigator = useNavigation();
 
@@ -18,16 +20,16 @@ export const OrderComponent = () => {
 
           <View>
             <MaterialIcons name="shopping-basket" size={28} color="black" />
-            <View style={[globalStyles.shadowStyle, styles.budget]}><Text style={[globalStyles.textCenter]}>3</Text></View>
+            <View style={[globalStyles.shadowStyle, styles.budget]}><Text style={[globalStyles.textCenter]}>{order.bagsLength}</Text></View>
           </View>
 
-          <Text style={[globalStyles.fontMedium, {marginStart: 16}]}>Juan Soto</Text>
+          <Text style={[globalStyles.fontMedium, {marginStart: 16}]}>{order.userName}</Text>
 
         </View>
 
         <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
 
-          <Text style={[globalStyles.fontBold, globalStyles.fontMedium, styles.colorAlert]}>#672GL4</Text>
+          <Text style={[globalStyles.fontBold, globalStyles.fontMedium, styles.colorAlert]}>#{order._id.slice(order._id.length -6)}</Text>
 
         </View>
 
