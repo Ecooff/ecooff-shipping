@@ -3,12 +3,15 @@ import { StyleSheet, View, Image, Pressable, Text, TouchableOpacity, SafeAreaVie
 import { MaterialIcons } from '@expo/vector-icons';
 import globalStyles from "../styles/styles";
 
-export const OrderBargsComponent = () => {
+export const OrderBargsComponent = ({
+  bag
+}) => {
 
   const [opened, setOpened] = useState(false);
 
   return (
     <View style={[styles.providerCard, globalStyles.shadowStyle]}>
+
       <View style={[globalStyles.widthFluid, !opened && styles.closed]}>
 
         {/* PROVIDER INFO */}
@@ -18,10 +21,10 @@ export const OrderBargsComponent = () => {
 
             <Image
               style={[globalStyles.shadowStyle, styles.provImg]}
-              source={{ uri: "https://images.rappi.com.ar/marketplace/coto-1599858972.png?d=200x200&e=webp" }}
+              source={{ uri: bag.providerImg }}
             />
 
-            <Text style={[globalStyles.fontBold]}>COTO</Text>
+            <Text style={[globalStyles.fontBold]}>{bag.providerName}</Text>
 
           </View>
 
@@ -31,7 +34,7 @@ export const OrderBargsComponent = () => {
               style={[globalStyles.row, globalStyles.alignItemsCenter]}
               onPress={() => setOpened(true)}
             >
-              <Text style={[styles.addressText, { fontSize: 12 }, {color: 'grey'}]}>Ver detalle</Text>
+              <Text style={[styles.addressText, { fontSize: 12 }, { color: 'grey' }]}>Ver detalle</Text>
               <MaterialIcons name="arrow-forward-ios" size={12} color="grey" style={{ marginStart: 2 }} />
             </TouchableOpacity>
           }
@@ -39,81 +42,32 @@ export const OrderBargsComponent = () => {
         </View>
 
         {/* BAGS */}
-        <View style={[globalStyles.row, globalStyles.justifyContentBetween, globalStyles.alignItemsCenter, styles.productList]}>
 
-          <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
+        {
+          bag.productArray.map((item) => {
+            return (
+              <View key={item.productId} style={[globalStyles.row, globalStyles.justifyContentBetween, globalStyles.alignItemsCenter, styles.productList]}>
 
-            <View style={globalStyles.shadowStyle}>
-              <Image
-                style={[globalStyles.shadowStyle, styles.productImg]}
-                source={{ uri: "https://media.justo.mx/products/7501000111206_1.jpg" }}
-              />
-            </View>
+                <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
 
-            <Text style={[globalStyles.fontMedium, { marginLeft: 5 }]}>Pan lactal</Text>
+                  <View style={globalStyles.shadowStyle}>
+                    <Image
+                      style={[globalStyles.shadowStyle, styles.productImg]}
+                      source={{ uri: item.img }}
+                    />
+                  </View>
 
-          </View>
+                  <Text style={[globalStyles.fontMedium, { marginLeft: 5 }]}>{item.name}</Text>
 
-          <Text style={globalStyles.fontMedium}>x4</Text>
+                </View>
 
-        </View>
+                <Text style={globalStyles.fontMedium}>x{item.quantity}</Text>
 
-        <View style={[globalStyles.row, globalStyles.justifyContentBetween, globalStyles.alignItemsCenter, styles.productList]}>
+              </View>
+            )
 
-          <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
-
-            <View style={globalStyles.shadowStyle}>
-              <Image
-                style={[globalStyles.shadowStyle, styles.productImg]}
-                source={{ uri: "https://media.justo.mx/products/7501000111206_1.jpg" }}
-              />
-            </View>
-
-            <Text style={[globalStyles.fontMedium, { marginLeft: 5 }]}>Pan lactal</Text>
-
-          </View>
-
-          <Text style={globalStyles.fontMedium}>x4</Text>
-
-        </View>
-
-        <View style={[globalStyles.row, globalStyles.justifyContentBetween, globalStyles.alignItemsCenter, styles.productList]}>
-
-          <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
-
-            <View style={globalStyles.shadowStyle}>
-              <Image
-                style={[globalStyles.shadowStyle, styles.productImg]}
-                source={{ uri: "https://media.justo.mx/products/7501000111206_1.jpg" }}
-              />
-            </View>
-
-            <Text style={[globalStyles.fontMedium, { marginLeft: 5 }]}>Pan lactal</Text>
-
-          </View>
-
-          <Text style={globalStyles.fontMedium}>x4</Text>
-
-        </View>
-
-        <View style={[globalStyles.row, globalStyles.justifyContentBetween, globalStyles.alignItemsCenter, styles.productList]}>
-
-          <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
-
-            <View style={globalStyles.shadowStyle}>
-              <Image
-                style={[globalStyles.shadowStyle, styles.productImg]}
-                source={{ uri: "https://media.justo.mx/products/7501000111206_1.jpg" }}
-              />
-            </View>
-
-            <Text style={[globalStyles.fontMedium, { marginLeft: 5 }]}>Pan lactal</Text>
-
-          </View>
-
-          <Text style={globalStyles.fontMedium}>x4</Text>
-
-        </View>
+          })
+        }
 
         <TouchableOpacity
           onPress={() => setOpened(false)}
@@ -121,8 +75,8 @@ export const OrderBargsComponent = () => {
           <Text style={styles.seeLessLabel}>Ver menos</Text>
         </TouchableOpacity>
 
-
       </View>
+
     </View>
   );
 };

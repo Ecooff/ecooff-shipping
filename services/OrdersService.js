@@ -10,8 +10,22 @@ const OrdersService = {
     return data;
   },
 
+  getOrdersToPickUp: async (user) => {
+    const data = await axios.get(URLPath.getOrdersToPickUp, {
+      headers: setHeader(user.token),
+    });
+    return data;
+  },
+
   getOrdersToDeliver: async (user, filter) => {
     const data = await axios.get(URLPath.getOrdersToDeliver + filter, {
+      headers: setHeader(user.token),
+    });
+    return data;
+  },
+
+  getOrdersDetail: async (user, orderId) => {
+    const data = await axios.get(URLPath.getOrdersDetail + orderId, {
       headers: setHeader(user.token),
     });
     return data;

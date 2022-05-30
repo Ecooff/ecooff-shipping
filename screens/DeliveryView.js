@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useIsFocused } from '@react-navigation/native';
 import { ScrollView, ActivityIndicator, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import globalStyles from "../styles/styles";
 import { useSelector } from "react-redux";
@@ -14,20 +15,27 @@ import { OrderComponent, ProgressBarComponent } from "../components";
 import ordersService from "../services/OrdersService";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const DeliveryView = () => {
+const DeliveryView = ({ navigation }) => {
 
   const user = useSelector(selectUser);
   const [listOfOrders, setListOfOrders] = useState({});
-  const [filter, setFilter] = useState('Lista');
+  const [filter, setFilter] = useState('Recogida');
   const [loading, setLoading] = useState(false);
   const buttongradient = ['#0986AF', '#28A5CE'];
   const whitegradient = ['#FFF', '#FFF'];
+  const isFocused = useIsFocused();
 
   useEffect(() => {
 
     getOrderList(filter);
 
   }, []);
+
+  useEffect(() => {
+
+      isFocused && getOrderList(filter);
+
+  }, [isFocused]);
 
   const changeFilter = (newFilter) => {
     if (filter != newFilter) {
@@ -50,7 +58,7 @@ const DeliveryView = () => {
       {/* VIEW */}
       <View style={[globalStyles.row, styles.viewTitle]}>
         <Text style={[globalStyles.fontBold, globalStyles.fontLarge]}>Pedidos a recoger</Text>
-        <Text style={[globalStyles.fontMedium, { margin: 6 }]}>({listOfOrders.ordersCompleted})</Text>
+        <Text style={[globalStyles.fontMedium, { margin: 6 }]}>({listOfOrders.ordersLength})</Text>
       </View>
 
       <View style={styles.progressBarCont}>
@@ -59,26 +67,6 @@ const DeliveryView = () => {
       </View>
 
       <View style={[globalStyles.row, globalStyles.justifyContentAround, globalStyles.alignItemsCenter, styles.buttonsRow]}>
-
-        <TouchableOpacity
-          style={filter != 'Lista' && [globalStyles.shadowStyle, styles.button]}
-          onPress={() => changeFilter('Lista')}
-        >
-
-          <LinearGradient
-            // Button Linear Gradient
-            colors={filter == 'Lista' ? buttongradient : whitegradient}
-            start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
-            style={filter == 'Lista' && [globalStyles.shadowStyle, styles.button]}
-          >
-
-            <Text style={filter == 'Lista' && [styles.buttonText, styles.selected, globalStyles.textWhite]}>
-              A entregar
-            </Text>
-
-          </LinearGradient>
-
-        </TouchableOpacity>
 
         <TouchableOpacity
           style={filter != 'Recogida' && [globalStyles.shadowStyle, styles.button]}
@@ -93,6 +81,26 @@ const DeliveryView = () => {
           >
 
             <Text style={filter == 'Recogida' && [styles.buttonText, styles.selected, globalStyles.textWhite]}>
+              A entregar
+            </Text>
+
+          </LinearGradient>
+
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={filter != 'Completada' && [globalStyles.shadowStyle, styles.button]}
+          onPress={() => changeFilter('Completada')}
+        >
+
+          <LinearGradient
+            // Button Linear Gradient
+            colors={filter == 'Completada' ? buttongradient : whitegradient}
+            start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
+            style={filter == 'Completada' && [globalStyles.shadowStyle, styles.button]}
+          >
+
+            <Text style={filter == 'Completada' && [styles.buttonText, styles.selected, globalStyles.textWhite]}>
               Entregados
             </Text>
 
@@ -131,7 +139,7 @@ const DeliveryView = () => {
             listOfOrders.orderArray != null && listOfOrders.orderArray.length > 0 ?
               listOfOrders.orderArray.map((order) => {
                 return (
-                  <OrderComponent order={order} />
+                  <OrderComponent key={order.orderId} order={order} />
                 )
               })
               :

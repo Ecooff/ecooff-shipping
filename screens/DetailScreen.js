@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StatusBar, StyleSheet, Image, Text, View, TextInput, TouchableOpacity, SafeAreaView, Pressable, Modal } from "react-native";
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import globalStyles from "../styles/styles";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice";
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from "@react-navigation/native";
+import { commonFunctions } from "../utils";
 
 { /* COMPONENTS */ }
 import { OrderBargsComponent } from "../components";
@@ -13,12 +14,40 @@ import { OrderBargsComponent } from "../components";
 { /* SERVICES */ }
 import ordersService from "../services/OrdersService";
 
-const DeliveryView = () => {
+const DeliveryView = ({ route }) => {
 
   const user = useSelector(selectUser);
   const navigator = useNavigation();
   const defaultColor = ["#8e8e8e", "#cfcfd0"];
   const successColor = ["#3E9375", "#4DB591"];
+  const [loading, setLoading] = useState(true);
+  const [statusLoader, setStatusLoader] = useState(false);
+  const [order, setOrder] = useState({ userAddress: '', orderId: '', bagArray: [] });
+
+  useEffect(() => {
+    setLoading(true);
+    ordersService.getOrdersDetail(user, route.params.orderId).then((response) => {
+      setOrder(response.data);
+      setLoading(false);
+    }).catch((err) => console.log('ERROR DELIVERY VIEW ', err));
+
+  }, []);
+
+  const changeStatus = () => {
+
+    setStatusLoader(true);
+
+    let status = {
+      statusCode: '3',
+      id: order.orderId
+    };
+
+    ordersService.changeOrderStatus(user, status).then((response) => {
+      setOrder({ ...order, status: 'Completada' });
+      setStatusLoader(false);
+    }).catch((err) => console.log('ERROR DELIVERY VIEW ', err));
+
+  };
 
   return (
     <View style={[globalStyles.homeContainer]}>
@@ -33,43 +62,66 @@ const DeliveryView = () => {
 
       <LinearGradient
         // Button Linear Gradient
-        colors={defaultColor}
+        colors={order.status != 'Completada' ? defaultColor : successColor}
         start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
         style={[globalStyles.row, globalStyles.justifyContentCenter, globalStyles.alignItemsCenter, styles.mainBanner]}>
 
-        <Text style={[globalStyles.fontBold, globalStyles.textWhite, { fontSize: 32 }]}>#4DB591</Text>
+        <Text style={[globalStyles.fontBold, globalStyles.textWhite, { fontSize: 32 }]}>#{order.orderId.slice(order.orderId.length - 6)}</Text>
 
       </LinearGradient>
 
-      {/* PERSONAL DATA */}
-      <Text style={[globalStyles.widthFluid, globalStyles.textCenter, globalStyles.fontLarge, globalStyles.fontBold, { marginTop: 25 }]}>Manuel Gonzales</Text>
-      <Text style={[globalStyles.widthFluid, globalStyles.textCenter, globalStyles.fontMlarge, { color: 'grey' }, { marginTop: 10 }]}>Cabildo 1928, P1 DE</Text>
+      {
+        !loading ?
+          <View>
+            {/* PERSONAL DATA */}
+            <Text style={[globalStyles.widthFluid, globalStyles.textCenter, globalStyles.fontLarge, globalStyles.fontBold, { marginTop: 25 }]}>{order.username}</Text>
+            <Text style={[globalStyles.widthFluid, globalStyles.textCenter, globalStyles.fontMlarge, { color: 'grey' }, { marginTop: 10 }]}>{commonFunctions.capitalize(order.userAddress.street)} {order.userAddress.streetNumber}, P{order.userAddress.floor} D{order.userAddress.door}</Text>
 
-      {/* BUTTON */}
-      <View style={[globalStyles.row, globalStyles.justifyContentCenter, globalStyles.alignItemsCenter]}>
+            {/* BUTTON */}
+            <View style={[globalStyles.row, globalStyles.justifyContentCenter, globalStyles.alignItemsCenter]}>
 
-        <TouchableOpacity
-          style={[globalStyles.shadowStyle, styles.button]}
-        >
+              <TouchableOpacity
+                onPress={() => changeStatus()}
+                style={[globalStyles.shadowStyle, styles.button, order.status == 'Completada' && globalStyles.secondary]}
+              >
 
-          <Text style={[globalStyles.fontMedium, styles.buttonText, styles.selected]}>
-            Entregar
-          </Text>
+                {
+                  !statusLoader ?
+                  order.status == 'Completada' ?
+                    <Text style={[globalStyles.fontMedium, styles.buttonText, globalStyles.textWhite]}>
+                      Entregado
+                    </Text>
+                    :
+                    <Text style={[globalStyles.fontMedium, styles.buttonText]}>
+                      Entregar
+                    </Text>
+                    :
+                    <ActivityIndicator size="small" color="grey" style={{marginHorizontal:28}} />
+                }
 
-        </TouchableOpacity>
+              </TouchableOpacity>
 
-      </View>
+            </View>
 
-      <ScrollView style={[{ paddingHorizontal: 30 }, { paddingTop: 10 }, { marginTop: 20 }]}>
+            <ScrollView style={[{ paddingHorizontal: 30 }, { paddingTop: 10 }, { marginTop: 20 }]}>
 
-        <OrderBargsComponent />
-        <OrderBargsComponent />
-        <OrderBargsComponent />
-        <OrderBargsComponent />
+              {
+                order.bagArray.map((bag) => {
+                  return (
+                    <OrderBargsComponent key={bag.provderId} bag={bag} />
+                  )
+                })
+              }
 
-      </ScrollView>
+            </ScrollView>
+          </View>
+          :
+          <View style={[{ flex: 1 }, { marginTop: '30%' }]}>
+            <ActivityIndicator size="small" color="grey" />
+          </View>
+      }
 
-    </View>
+    </View >
   );
 };
 

@@ -1,24 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  Pressable,
-  Modal,
-} from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import globalStyles from "../styles/styles";
-import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice";
 
 { /* COMPONENTS */ }
-import { MenuComponent, FooterComponent, ProgressBarComponent } from "../components";
+import { ProgressBarComponent } from "../components";
 
 { /* SERVICES */ }
 import ordersService from "../services/OrdersService";
@@ -26,16 +13,12 @@ import ordersService from "../services/OrdersService";
 const HomeScreen = () => {
 
   const user = useSelector(selectUser);
-  const navigator = useNavigation();
   const [month, setMonth] = useState('');
+  const [stats, setStats] = useState({});
   const [orders, setOrders] = useState(0);
   const [providres, setProvidres] = useState(0);
   const [bags, setBags] = useState(0);
-  const [statReady, setStatReady] = useState(0);
-  const [statPicked, setStatPicked] = useState(0);
-  const [statFinished, setStatFinished] = useState(0);
-
-  let total = 0;
+  const [loading, setLoader] = useState(true);
 
   useEffect(() => {
 
@@ -77,16 +60,25 @@ const HomeScreen = () => {
         setMonth('Div');
         break;
     }
+
     ordersService.getHomeStats(user).then((response) => {
-      incrementAnimmation(0, response.data.ordersLength, 0);
-      incrementAnimmation(0, response.data.providersLength, 1);
-      incrementAnimmation(0, response.data.bagsLength, 2);
-      incrementAnimmation(0, response.data.ordersReady, 3);
-      incrementAnimmation(0, response.data.ordersRetrieved, 4);
-      incrementAnimmation(0, response.data.ordersCompleted, 5);
-    }).catch((err) => console.log('ERROR HOME STATS ', err))
+
+      setStatsData(response.data);
+
+      incrementAnimmation(0, response.data.ordersLength, setOrders);
+      incrementAnimmation(0, response.data.providersLength, setProvidres);
+      incrementAnimmation(0, response.data.bagsLength, setBags);
+
+      setLoader(false);
+
+    }).catch((err) => console.log('ERROR HOME STATS ', err));
 
   }, []);
+
+
+  const setStatsData = (data) => {
+    setStats(data);
+  }
 
   const incrementAnimmation = (i, maxLength, option) => {
 
@@ -98,26 +90,7 @@ const HomeScreen = () => {
       };
 
       setTimeout(function () {
-        switch (option) {
-          case 0:
-            setOrders(i);
-            break;
-          case 1:
-            setProvidres(i);
-            break;
-          case 2:
-            setBags(i);
-            break;
-          case 3:
-            setStatReady(i);
-            break;
-          case 4:
-            setStatPicked(i);
-            break;
-          case 5:
-            setStatFinished(i);
-            break;
-        }
+        option(i);
         i++;
         i <= maxLength && incrementAnimmation(i, maxLength, option);
       }, 50 / maxLength);
@@ -134,15 +107,26 @@ const HomeScreen = () => {
       <View style={styles.mainContainer}>
 
         <View style={[globalStyles.row, globalStyles.justifyContentCenter, globalStyles.widthFluid]}>
+
           <View style={[styles.dateBox, globalStyles.shadowStyle]}>
 
-            <Text style={globalStyles.fontBold}>
-              {new Date().getDate()}
-            </Text>
+            {
+              !loading ?
+                <View>
 
-            <Text>
-              {month}
-            </Text>
+                  <Text style={[globalStyles.fontBold, globalStyles.textCenter]}>
+                    {new Date().getDate()}
+                  </Text>
+
+                  <Text style={globalStyles.textCenter}>
+                    {month}
+                  </Text>
+
+                </View>
+
+                :
+                <ActivityIndicator size="small" />
+            }
 
           </View>
         </View>
@@ -174,20 +158,17 @@ const HomeScreen = () => {
 
           {/* PROGRESS BAR */}
           <Text style={[globalStyles.fontMedium, { marginTop: 20 }]}>Pedidos listos</Text>
-          <ProgressBarComponent color1={'#E09B14'} color2={'#F8BC47'} percentage={statReady} showNumber={true} />
+          <ProgressBarComponent color1={'#E09B14'} color2={'#F8BC47'} percentage={stats.ordersReady} showNumber={true} />
 
           <Text style={[globalStyles.fontMedium, { marginTop: 10 }]}>Pedidos recogidos</Text>
-          <ProgressBarComponent color1={'#0480A9'} color2={'#26BCED'} percentage={statPicked} showNumber={true} />
+          <ProgressBarComponent color1={'#0480A9'} color2={'#26BCED'} percentage={stats.ordersRetrieved} showNumber={true} />
 
           <Text style={[globalStyles.fontMedium, { marginTop: 10 }]}>Pedidos entregados</Text>
-          <ProgressBarComponent color1={'#429C7D'} color2={'#7ECFB3'} percentage={statFinished} showNumber={true} />
+          <ProgressBarComponent color1={'#429C7D'} color2={'#7ECFB3'} percentage={stats.ordersCompleted} showNumber={true} />
 
         </View>
 
       </View>
-
-      {/* FOOTER */}
-      <FooterComponent />
 
     </View >
   );

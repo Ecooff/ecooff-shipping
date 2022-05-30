@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 { /* COMPONENTS */ }
-import { MenuComponent, FooterComponent, PickUpComponent, ProgressBarComponent } from "../components";
+import { PickUpComponent, ProgressBarComponent } from "../components";
 
 { /* SERVICES */ }
 import ordersService from "../services/OrdersService";
@@ -40,10 +40,10 @@ const PickUpView = () => {
 
   const getOrderList = (newFilter) => {
     setLoading(true);
-    ordersService.getOrdersToDeliver(user, newFilter).then((response) => {
+    ordersService.getOrdersToPickUp(user, newFilter).then((response) => {
       setLoading(false);
       setListOfPickUps(response.data);
-    }).catch((err) => console.log('ERROR DELIVERY VIEW ', err));
+    }).catch((err) => console.log('ERROR PICKUP VIEW ', err));
   }
 
   return (
@@ -52,12 +52,12 @@ const PickUpView = () => {
       {/* VIEW */}
       <View style={[globalStyles.row, styles.viewTitle]}>
         <Text style={[globalStyles.fontBold, globalStyles.fontLarge]}>Pedidos a recoger</Text>
-        <Text style={[globalStyles.fontMedium, { margin: 6 }]}>(30)</Text>
+        <Text style={[globalStyles.fontMedium, { margin: 6 }]}>({listOfPickUps.bagsReady})</Text>
       </View>
 
       <View style={styles.progressBarCont}>
-        <ProgressBarComponent color1={'#037AA0'} color2={'#67D4F8'} percentage={78} thin={true} />
-        <Text style={[globalStyles.fontMain, styles.progresLabel]}>40% de los productos listos</Text>
+        <ProgressBarComponent color1={'#037AA0'} color2={'#67D4F8'} percentage={listOfPickUps.bagsReady} thin={true} />
+        <Text style={[globalStyles.fontMain, styles.progresLabel]}>{listOfPickUps.bagsReady}% de los productos listos</Text>
       </View>
 
       <View style={[globalStyles.row, globalStyles.justifyContentAround, globalStyles.alignItemsCenter, styles.buttonsRow]}>
@@ -120,15 +120,14 @@ const PickUpView = () => {
 
       <ScrollView style={styles.scrollContainer}>
 
-
         {
           // IF LOADING
           !loading ?
             // IF THERES DATA
-            listOfPickUps.orderArray != null && listOfPickUps.orderArray.length > 0 ?
-              listOfPickUps.orderArray.map((item) => {
+            listOfPickUps.finalArray != null && listOfPickUps.finalArray.length > 0 ?
+              listOfPickUps.finalArray.map((provider) => {
                 return (
-                  <PickUpComponent />
+                  <PickUpComponent key={provider.orderId} provider={provider}  />
                 )
               })
               :
