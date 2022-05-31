@@ -10,10 +10,11 @@ export const retrieveUser = URL + "shipping/auth/retrieveUser";
 
 // ORDERS
 export const getHomeStats = URL + "orders/getDailyOrdersLength";
-export const getOrdersToPickUp = URL + "orders/getDailyBags";
+export const getOrdersToPickUp = URL + "orders/getDailyBags/";
 export const getOrdersToDeliver = URL + "orders/getDeliveryScreenData/";
 export const getOrdersDetail = URL + "orders/getOrderDetail/";
 export const changeOrderStatus = URL + "orders/changeStatus";
+export const changeBagStatus = URL + "orders/changeBagStatus";
 
 const URLPath = {
   serverAlive,
@@ -21,6 +22,7 @@ const URLPath = {
   retrieveUser,
   getHomeStats,
   changeOrderStatus,
+  changeBagStatus,
   getOrdersToDeliver,
   getOrdersDetail,
   getOrdersToPickUp

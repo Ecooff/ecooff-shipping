@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { StyleSheet, View, Image, Pressable, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import globalStyles from "../styles/styles";
@@ -8,6 +8,12 @@ export const OrderBargsComponent = ({
 }) => {
 
   const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+
+    // console.log('Bags', bag);
+
+  }, []);
 
   return (
     <View style={[styles.providerCard, globalStyles.shadowStyle]}>
@@ -42,7 +48,6 @@ export const OrderBargsComponent = ({
         </View>
 
         {/* BAGS */}
-
         {
           bag.productArray.map((item) => {
             return (

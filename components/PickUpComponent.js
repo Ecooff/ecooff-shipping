@@ -5,20 +5,13 @@ import globalStyles from "../styles/styles";
 import { commonFunctions } from "../utils";
 
 // COMPONENTS
-import ProgressBarComponent from "../components/ProgressBarComponent";
-import BagComponent from "./BagComponent";
+import { ProgressBarComponent, BagComponent } from "./";
 
 export const PickUpComponent = ({
   provider
 }) => {
 
   const [opened, setOpened] = useState(false);
-
-  useEffect(() => {
-
-    console.log('Component', provider);
-
-  }, []);
 
   return (
     <View style={[globalStyles.widthFluid, globalStyles.shadowStyle, styles.providerCard]}>
@@ -42,7 +35,7 @@ export const PickUpComponent = ({
 
           <View style={styles.progBar}>
 
-            <ProgressBarComponent color1={'#429C7D'} color2={'#7ECFB3'} percentage={70} thin={true} />
+            <ProgressBarComponent color1={'#429C7D'} color2={'#7ECFB3'} percentage={provider.bagsReady} thin={true} />
 
           </View>
 
@@ -51,11 +44,13 @@ export const PickUpComponent = ({
         {/* BAGS */}
         <View style={[{ marginTop: 30 }]}>
 
-          {/* {
-            provider.bags.map((bag) => {
-              <BagComponent key={bag.bagId} />
+          {
+            provider.bags.map((bag, i) => {
+              return(
+                <BagComponent key={i} param={bag} />
+              )
             })
-          } */}
+          }
 
         </View>
 

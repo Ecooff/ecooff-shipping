@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StatusBar, StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ActivityIndicator, Pressable, Modal } from "react-native";
 import globalStyles from "../styles/styles";
-import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,8 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const PickUpView = () => {
 
   const user = useSelector(selectUser);
-  const navigator = useNavigation();
-  const [filter, setFilter] = useState('Recogida');
+  const [filter, setFilter] = useState(0);
   const [loading, setLoading] = useState(false);
   const [listOfPickUps, setListOfPickUps] = useState({});
 
@@ -63,16 +61,18 @@ const PickUpView = () => {
       <View style={[globalStyles.row, globalStyles.justifyContentAround, globalStyles.alignItemsCenter, styles.buttonsRow]}>
 
         <TouchableOpacity
+          onPress={() => changeFilter(0)}
+          style={filter != 0 && [globalStyles.shadowStyle, styles.button]}
         >
 
           <LinearGradient
             // Button Linear Gradient
-            colors={buttongradient}
+            colors={filter == 0 ? buttongradient : whitegradient}
             start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
-            style={[globalStyles.shadowStyle, styles.button]}
+            style={filter == 0 && [globalStyles.shadowStyle, styles.button]}
           >
 
-            <Text style={[styles.buttonText, styles.selected, globalStyles.textWhite]}>
+            <Text style={[styles.buttonText, styles.selected, filter == 0 && globalStyles.textWhite]}>
               Todos
             </Text>
 
@@ -81,35 +81,40 @@ const PickUpView = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[globalStyles.shadowStyle, styles.button]}
+          onPress={() => changeFilter(1)}
+          style={filter != 1 && [globalStyles.shadowStyle, styles.button]}
         >
 
           <LinearGradient
             // Button Linear Gradient
-            colors={whitegradient}
+            colors={filter == 1 ? buttongradient : whitegradient}
             start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
+            style={filter == 1 && [globalStyles.shadowStyle, styles.button]}
           >
 
-            <Text style={[styles.buttonText, styles.selected]}>
+            <Text style={[styles.buttonText, styles.selected, filter == 1 && globalStyles.textWhite]}>
               Pedidos listos
             </Text>
 
           </LinearGradient>
 
-        </TouchableOpacity>
+        </TouchableOpacity
+        >
 
         <TouchableOpacity
-          style={[globalStyles.shadowStyle, styles.button]}
+          onPress={() => changeFilter(2)}
+          style={filter != 2 && [globalStyles.shadowStyle, styles.button]}
         >
 
           <LinearGradient
             // Button Linear Gradient
-            colors={whitegradient}
+            colors={filter == 2 ? buttongradient : whitegradient}
             start={{ x: 0, y: 0.75 }} end={{ x: 1, y: 0.25 }}
+            style={filter == 2 && [globalStyles.shadowStyle, styles.button]}
           >
 
-            <Text style={[styles.buttonText, styles.selected]}>
-              En preparación
+            <Text style={[styles.buttonText, styles.selected, filter == 2 && globalStyles.textWhite]}>
+              Recogidas
             </Text>
 
           </LinearGradient>
@@ -139,7 +144,7 @@ const PickUpView = () => {
             <ActivityIndicator size="large" style={globalStyles.loaders} />
         }
 
-        <SafeAreaView style={{ height: 100 }}></SafeAreaView>
+        <SafeAreaView style={{ height: 120 }}></SafeAreaView>
 
       </ScrollView>
 

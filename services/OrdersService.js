@@ -10,8 +10,8 @@ const OrdersService = {
     return data;
   },
 
-  getOrdersToPickUp: async (user) => {
-    const data = await axios.get(URLPath.getOrdersToPickUp, {
+  getOrdersToPickUp: async (user, filter) => {
+    const data = await axios.get(URLPath.getOrdersToPickUp + filter, {
       headers: setHeader(user.token),
     });
     return data;
@@ -33,6 +33,14 @@ const OrdersService = {
 
   changeOrderStatus: async (user, status) => {
     const data = await axios.put(URLPath.changeOrderStatus, status, {
+      headers: setHeader(user.token),
+    });
+    return data;
+  },
+
+  changeBagStatus: async (user, status) => {
+    console.log(URLPath.changeBagStatus, status);
+    const data = await axios.put(URLPath.changeBagStatus, status, {
       headers: setHeader(user.token),
     });
     return data;
