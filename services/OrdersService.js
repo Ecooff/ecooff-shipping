@@ -11,6 +11,7 @@ const OrdersService = {
   },
 
   getOrdersToPickUp: async (user, filter) => {
+    console.log('USER', user.token);
     const data = await axios.get(URLPath.getOrdersToPickUp + filter, {
       headers: setHeader(user.token),
     });
@@ -39,11 +40,18 @@ const OrdersService = {
   },
 
   changeBagStatus: async (user, status) => {
-    console.log(URLPath.changeBagStatus, status);
-    const data = await axios.put(URLPath.changeBagStatus, status, {
+
+    return fetch(URLPath.changeBagStatus + `${status.statusCode}/${status.orderId}/${status.bagId}`, {
+      method: "PUT",
       headers: setHeader(user.token),
+    }).then((response) => response.json()).catch((error) => {
+      return error;
     });
-    return data;
+
+    // const data = await axios.put(URLPath.changeBagStatus + `${status.statusCode}/${status.orderId}/${status.bagId}`,  {
+    //   headers: setHeader(user.token),
+    // });
+    // return data;
   },
 
 };

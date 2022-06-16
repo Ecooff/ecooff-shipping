@@ -47,7 +47,7 @@ export const PickUpComponent = ({
           {
             provider.bags.map((bag, i) => {
               return(
-                <BagComponent key={i} param={bag} />
+                <BagComponent key={bag._id} param={bag} />
               )
             })
           }

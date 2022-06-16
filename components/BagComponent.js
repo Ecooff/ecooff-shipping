@@ -21,13 +21,11 @@ export const BagComponent = ({
 
     setLoader(true);
 
-    let newStatus = {
-      statusCode: "2",
+    ordersService.changeBagStatus(user, {
+statusCode: "2",
       orderId: bag.orderId,
-      bagId: bag.bagId
-    }
-
-    ordersService.changeBagStatus(user, newStatus).then((response) => {
+      bagId: bag._id
+    }).then((response) => {
       setLoader(false);
       setBag({ ...bag, status: 'Recogida' });
     }).catch((err) => console.log('ERROR PICKUP VIEW ', err));
@@ -49,11 +47,11 @@ export const BagComponent = ({
 
         {
           bag.status != 'Pendiente' &&
-            <TouchableOpacity
-              disabled={bag.status == 'Recogida'}
-              onPress={() => retriveBag()}
-              style={[globalStyles.shadowStyle, styles.button, bag.status == 'Recogida' && globalStyles.secondary]}
-            >
+          <TouchableOpacity
+            disabled={bag.status == 'Recogida'}
+            onPress={() => retriveBag()}
+            style={[globalStyles.shadowStyle, styles.button, bag.status == 'Recogida' && globalStyles.secondary]}
+          >
             {
               loading ?
                 <View>
@@ -77,7 +75,7 @@ export const BagComponent = ({
           <MaterialIcons name="shopping-basket" size={28} color="black" />
 
           <View style={[globalStyles.shadowStyle, styles.budget]}>
-            <Text style={[globalStyles.textCenter]}>{bag.productsLength}</Text>
+            <Text style={[globalStyles.textCenter]}>{bag.products.length}</Text>
           </View>
 
         </View>

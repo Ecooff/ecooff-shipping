@@ -14,7 +14,7 @@ export const getOrdersToPickUp = URL + "orders/getDailyBags/";
 export const getOrdersToDeliver = URL + "orders/getDeliveryScreenData/";
 export const getOrdersDetail = URL + "orders/getOrderDetail/";
 export const changeOrderStatus = URL + "orders/changeStatus";
-export const changeBagStatus = URL + "orders/changeBagStatus";
+export const changeBagStatus = URL + "orders/changeBagStatus/";
 
 const URLPath = {
   serverAlive,
