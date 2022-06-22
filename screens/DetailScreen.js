@@ -82,7 +82,7 @@ const DeliveryView = ({ route }) => {
 
               <TouchableOpacity
                 onPress={() => changeStatus()}
-                disabled={order.status == true}
+                disabled={order.status == 'Completada'}
                 style={[globalStyles.shadowStyle, styles.button, order.status == 'Completada' && globalStyles.secondary]}
               >
 

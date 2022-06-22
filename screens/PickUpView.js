@@ -12,6 +12,7 @@ import { PickUpComponent, ProgressBarComponent } from "../components";
 { /* SERVICES */ }
 import ordersService from "../services/OrdersService";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { List } from "react-native-paper";
 
 const PickUpView = () => {
 
@@ -62,6 +63,7 @@ const PickUpView = () => {
 
         <TouchableOpacity
           onPress={() => changeFilter(0)}
+          disabled={loading || listOfPickUps.length > 0}
           style={filter != 0 && [globalStyles.shadowStyle, styles.button]}
         >
 
@@ -82,6 +84,7 @@ const PickUpView = () => {
 
         <TouchableOpacity
           onPress={() => changeFilter(1)}
+          disabled={loading || listOfPickUps.length > 0}
           style={filter != 1 && [globalStyles.shadowStyle, styles.button]}
         >
 
@@ -103,6 +106,7 @@ const PickUpView = () => {
 
         <TouchableOpacity
           onPress={() => changeFilter(2)}
+          disabled={loading || listOfPickUps.length > 0}
           style={filter != 2 && [globalStyles.shadowStyle, styles.button]}
         >
 

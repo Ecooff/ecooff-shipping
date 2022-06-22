@@ -70,6 +70,7 @@ const DeliveryView = ({ navigation }) => {
 
         <TouchableOpacity
           style={filter != 'Recogida' && [globalStyles.shadowStyle, styles.button]}
+          disabled={loading || listOfOrders.length > 0}
           onPress={() => changeFilter('Recogida')}
         >
 
@@ -90,6 +91,7 @@ const DeliveryView = ({ navigation }) => {
 
         <TouchableOpacity
           style={filter != 'Completada' && [globalStyles.shadowStyle, styles.button]}
+          disabled={loading || listOfOrders.length > 0}
           onPress={() => changeFilter('Completada')}
         >
 
@@ -110,6 +112,7 @@ const DeliveryView = ({ navigation }) => {
 
         <TouchableOpacity
           style={filter != 'All' && [globalStyles.shadowStyle, styles.button]}
+          disabled={loading || listOfOrders.length > 0}
           onPress={() => changeFilter('All')}
         >
 

@@ -21,7 +21,8 @@ export const PickUpComponent = ({
         {/* PROVIDER INFO */}
         <View style={[globalStyles.row, globalStyles.alignItemsCenter]}>
 
-          <View style={[globalStyles.row, globalStyles.alignItemsCenter, { width: '80%' }]}>
+          <View style={[globalStyles.row, globalStyles.alignItemsCenter, 
+            opened ? { width: '50%' } : { width: '80%' }]}>
 
             <Image
               style={[globalStyles.shadowStyle, styles.provImg]}
@@ -32,6 +33,21 @@ export const PickUpComponent = ({
             <Text style={{ marginLeft: 5 }}>- {commonFunctions.capitalize(provider.providerAddress.street)} {provider.streetNumber}</Text>
 
           </View>
+
+          {
+            opened &&
+            <View style={[globalStyles.justifyContentCenter, { width: '30%' }]}>
+
+              <TouchableOpacity
+                style={[globalStyles.row, globalStyles.justifyContentCenter, globalStyles.alignItemsCenter]}
+                onPress={() => setOpened(false)}
+              >
+                <Text style={styles.seeLessLabel}>Ver menos</Text>
+                <MaterialIcons name="keyboard-arrow-up" size={12} color="grey" style={[{ marginStart: 2 }, { marginTop: 2 }]} />
+              </TouchableOpacity>
+
+            </View>
+          }
 
           <View style={styles.progBar}>
 
@@ -46,7 +62,7 @@ export const PickUpComponent = ({
 
           {
             provider.bags.map((bag, i) => {
-              return(
+              return (
                 <BagComponent key={bag._id} param={bag} />
               )
             })
@@ -58,7 +74,6 @@ export const PickUpComponent = ({
 
       {
         !opened ?
-
           <TouchableOpacity
             style={[globalStyles.row, globalStyles.justifyContentCenter, globalStyles.alignItemsCenter, { marginBottom: 10 }]}
             onPress={() => setOpened(true)}
